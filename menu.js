@@ -61,45 +61,40 @@ document.addEventListener("DOMContentLoaded", () => {
 /// DO NOT DISPLAY MENU DES FETES IF ITEM IS NOT HERE
 ///////////////////////////////
 
-  window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded", () => {
   console.log("🔍 Script started: checking menu availability");
 
-  // 1️⃣ Look for .menu_block_wrap with data-availability attribute
   const menuBlock = document.querySelector('.menu_block_wrap[data-availability]');
 
   if (!menuBlock) {
     console.warn("❌ No .menu_block_wrap found with [data-availability] attribute");
+    document.dispatchEvent(new Event("menuAvailabilityReady"));
     return;
   }
 
-  console.log("✅ Found .menu_block_wrap:", menuBlock);
-
-  // 2️⃣ Look for [data-object='list-for-visibility'] inside it
   const visibilityList = document.querySelector('[data-object="list-for-visibility"]');
 
   if (!visibilityList) {
-    console.warn("❌ No [data-object='list-for-visibility'] found inside .menu_block_wrap");
     menuBlock.setAttribute("data-availability", "no");
     console.log("➡️ data-availability set to 'no' (fallback)");
+    document.dispatchEvent(new Event("menuAvailabilityReady"));
     return;
   }
 
-  console.log("✅ Found list-for-visibility container:", visibilityList);
-
-  // 3️⃣ Look for item with data-item-slug="menu-des-fetes"
   const targetItem = visibilityList.querySelector('[data-item-slug="menu-des-fetes"]');
 
   if (targetItem) {
-    console.log("🎉 Found item with data-item-slug='menu-des-fetes':", targetItem);
     menuBlock.setAttribute("data-availability", "yes");
     console.log("➡️ data-availability set to 'yes'");
   } else {
-    console.log("🚫 No item with data-item-slug='menu-des-fetes' found");
     menuBlock.setAttribute("data-availability", "no");
     console.log("➡️ data-availability set to 'no'");
   }
 
-  console.log("✅ Script finished");
+  console.log("✅ Availability check finished");
+
+  // 🔔 SIGNAL THAT THIS SCRIPT IS DONE
+  document.dispatchEvent(new Event("menuAvailabilityReady"));
 });
 
 
@@ -107,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
 /// CREATE ALL THE BUTTONS WITH RIGHT ID
 //////////////////////////////
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("menuAvailabilityReady", () => {
     const contentWrap = document.querySelector(".menu_content_wrap");
     const blockWraps = contentWrap ? contentWrap.querySelectorAll(".menu_block_wrap:not([data-avoid-block='true']):not([data-availability='no'])") : [];
     const navLayout = document.querySelector(".menu_nav_list_layout");
