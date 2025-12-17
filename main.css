@@ -484,3 +484,7 @@ TRANSITIONS
 .weglot-container {
   display: none !important;
 }
+
+.menu_block_wrap[data-availability="no"] {
+  display: none;
+}
