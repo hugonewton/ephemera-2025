@@ -1,0 +1,486 @@
+/* LAST UPDATE 03/12/2025 */
+
+
+html {
+  overflow-y: scroll;          /* force scrollbar track to exist */
+  scrollbar-gutter: stable;    /* keep layout from shifting */
+  background: #fff;            /* fix the “black line” you saw */
+}
+
+:root {
+  --ease-bounce-back : cubic-bezier(0.205, 0.870, 0.660, 1.315);
+  --ease-out-quad : cubic-bezier(0.100, 0.660, 0.380, 0.925);
+}
+
+
+html.lenis {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+
+
+.social_link_list_item:hover .social_link_arrow_svg_wrap {
+  transform: translateY(-100%);
+  opacity: 1;
+}
+
+.w-webflow-badge {
+  display: none!important;
+}
+
+/* 
+===============================
+TRANSITIONS
+===============================
+*/
+
+.social_link_arrow_svg_wrap {
+  transition: all .2s var(--ease-bounce-back) ;
+}
+
+.nav_link_item_contain {
+  transition: color .2s ease, background-color .2s ease;
+}
+
+.button_underline_active {
+  transition: width .3s ease;
+}
+
+.footer_svg_logo {
+  transition: color .3s ease;
+}
+
+.accordion_component {
+  transition: background-color .3s ease;
+}
+
+
+.arrow_item_wrap, 
+.presse_article_item_contain {
+  transition: background-color .3s ease;
+}
+
+
+.footer_svg_badge {
+  transition: opacity .6s ease;
+}
+
+.form_main_radio_label {
+  transition: transform .2s var(--ease-bounce-back);
+}
+
+.menu_nav_list_contain {
+  transition: background-color .5s ease;
+}
+
+.event_img_slider_arrow_list_wrap,
+.event_item_logo_wrap {
+  transition: opacity .3s ease;
+}
+
+.blog_card_image_wrap img {
+  transition: transform 1s var(--ease-out-quad);
+}
+
+.u-pressed-down {
+  transition: transform .1s var(--ease-bounce-back) ;
+}
+
+.locale_item_wrap {
+  transition: opacity .3s var(--ease-out-quad);;
+}
+
+
+
+
+[data-prevent-flicker="true"] {
+  visibility: hidden;
+}
+
+
+
+
+.nav_link_item_wrap:nth-of-type(1) .nav_link_item_layout {
+  border-top: var(--border-width--main) solid var(--swatch--terre);
+}
+
+
+.button_main_wrap[data-icon-visibility="false"] .button_main_svg_wrap {
+  display: none;
+}
+
+
+@media only screen and (min-width: 767px) {
+  .button_main_wrap[data-wf--button-main--style="text-link"]:hover .button_underline_active {
+    width: 100%;
+  }  
+}
+
+
+/* LARGER than XX pixels */
+@media only screen and (min-width: 991px) {
+  .footer_svg:hover .footer_svg_badge {
+    opacity: 1;
+  }
+  
+  .footer_svg:hover .footer_svg_logo {
+    color: var(--swatch--obscurite);
+  }
+  
+  
+}
+
+.footer_svg_letters {
+  animation: rotate360 60s linear infinite;
+}
+
+.footer_svg_badge {
+  animation: rotate360Reverse 60s linear infinite;
+}
+
+@media only screen and (max-width: 991px) {
+  .footer_svg_badge {
+    opacity: 1;
+  }
+  .footer_svg_logo {
+    color: var(--swatch--obscurite);
+  }
+}
+
+
+@keyframes rotate360 {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotate360Reverse {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.iframe-resa {
+  border: none;
+}
+
+
+.form_main_radio_label.active  {
+  background-color: var(--swatch--terre);
+  color: var(--swatch--obscurite);
+}
+
+/* .form_main_radio_label.fs-cmsfilter_active .form_main_radio_text {
+  background-color: var(--swatch--terre);
+  color: var(--swatch--obscurite);
+} */
+
+
+.restaurant_info_tag_list_wrap li {
+  position: relative;
+  padding-left: 1.2em; /* space for the checkbox */  
+}
+
+
+.restaurant_info_tag_list_wrap li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.33em; /* adjust vertical alignment */
+  width: .7em;
+  height: .7em;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 194 170'><path d='M5.83775 111.78C-1.72066 104.232 -1.72066 91.9902 5.83775 84.4482C13.3962 76.8994 25.6532 76.8994 33.2116 84.4482L70.3276 121.517L158.595 7.49514C165.105 -0.931408 177.227 -2.48438 185.664 4.01784C194.102 10.5201 195.656 22.6265 189.146 31.053L88.3515 161.259C87.6348 162.347 86.7965 163.38 85.8433 164.338C78.2849 171.887 66.0278 171.887 58.4694 164.338L5.84451 111.78H5.83775Z' fill='%23F7E9D4'/></svg>") no-repeat center center;
+  background-size: contain;
+}
+
+
+/* SMALLER than XX pixels */
+@media only screen and (max-width: 479px) {
+  .button_main_wrap.no-svg-on-mobile .button_main_svg_wrap {
+    display: none;
+  }  
+}
+
+.arrow_item_wrap.is-disabled {
+  pointer-events: none;
+  opacity: 0;
+}
+
+.presse_btn_logo_wrap.is-active {
+  opacity: 1;
+}
+
+.presse_article_collection_item.is-active {
+  opacity: 1;
+}
+
+.presse_article_collection_item:not(.is-active) {
+  pointer-events: none;
+}
+
+/* SMALLER than XX pixels */
+@media only screen and (min-width: 767px) {
+  .presse_article_collection_item:hover .presse_article_item_contain {
+    background-color: var(--swatch--terre-o20);
+  }  
+}
+
+
+:root {
+  --thickness: 120px;
+
+}
+
+.on_mange_quoi_btn_item_contain {
+  --p: 0; /* percent 0–100 */
+  border-radius: 50%;
+  padding: 4px;
+  background:
+    conic-gradient(var(--swatch--terre) calc(var(--p) * 1%), var(--swatch--obscurite) 0);
+  /* -webkit-mask:
+    radial-gradient(farthest-side, transparent calc(50% - var(--thickness)), #000 0);
+          mask:
+    radial-gradient(farthest-side, transparent calc(50% - var(--thickness)), #000 0);
+} */
+}
+
+./* all content items stacked */
+.on_mange_quoi_content_collection_item { 
+  transform: translateX(100%); /* start off-screen right */
+  will-change: transform;
+}
+
+.job_img_collection_item:nth-child(even) .job_img_spacer {
+  display: none;
+
+}
+
+
+
+.job_img_collection_list {  
+  animation: scroll-marquee 50s linear infinite;
+}
+
+
+@keyframes scroll-marquee {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(calc(-50% - (var(--_spacing---space--6-32px)/1.5)));    
+  }
+}
+
+/* LARGER than XX pixels */
+@media only screen and (min-width: 767px) {
+  .presse_page_collection_item:hover [data-wf--presse_article--variant="page-presse"] .presse_article_item_contain {
+    background-color: var(--swatch--terre);
+    color: var(--swatch--obscurite);
+  }
+  
+  .presse_page_collection_item:hover [data-wf--presse_article--variant="page-presse"] .presse_article_logo_wrap {
+    mix-blend-mode: difference;
+  }
+}
+
+
+.st-mask-line-mask {
+  padding-top: .2em
+}
+
+.menu_nav_list_wrap.active {
+  /* height: calc(100svh - var(--_spacing---section-space--navbar-height)); */
+  /* z-index: 3; */
+}
+
+.menu_nav_list_wrap.active .menu_nav_list_contain{
+  /* height: calc(100svh - var(--_spacing---section-space--navbar-height)); */
+  background-color: var(--swatch--obscurite);  
+}
+
+.menu_nav_list_arrow_gradient_wrap {
+  opacity: 0;
+}
+
+.menu_nav_list_wrap.active .menu_nav_list_arrow_gradient_wrap {
+  opacity: 1;
+}
+
+[data-wf--form-input--variant="dark"] input::placeholder,
+[data-wf--form-textarea--variant="dark"] textarea::placeholder {
+  color: inherit;  
+  opacity: .3;
+} 
+
+[data-wf--form-input--variant="dark"] input:focus {
+  border-color: var(--swatch--obscurite);
+} 
+
+.contact_form_select_wrap[data-list-type="restaurant-choice"] {
+  visibility: hidden;
+}
+
+.contact_form_select_wrap[data-list-type="restaurant-choice"].isVisible {
+  visibility: visible;
+}
+
+/* SMALLER than XX pixels */
+@media only screen and (max-width: 767px) {
+  .contact_form_select_wrap[data-list-type="restaurant-choice"] {
+    display: none;
+  }
+  
+  .contact_form_select_wrap[data-list-type="restaurant-choice"].isVisible {
+    display: block;
+  }
+  
+}
+
+
+
+.event_item_wrap .event_img_slider_arrow_list_wrap {
+  opacity: 0;
+}
+/* LARGER than XX pixels */
+@media only screen and (min-width: 767px) {
+  .event_item_wrap:hover .event_img_slider_arrow_list_wrap {
+    opacity: 1;
+  }
+  
+  .event_item_wrap:hover .event_item_logo_wrap {
+    opacity: 0;
+  }
+}
+
+
+.event_recap_text_item_wrap ul {
+  list-style: none;
+}
+.event_recap_text_item_wrap ul li {
+  position: relative;
+  padding-left: .25em;
+}
+
+.event_recap_text_item_wrap ul li::before {
+  content: '';
+  position: absolute;
+  left: -1.2em;
+  top: 1px;
+  width: 1em;
+  height: 1em;
+  background-repeat: no-repeat;
+  background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-8'%3F%3E%3C!-- Generator: Adobe Illustrator 27.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0 --%3E%3Csvg version='1.1' id='Layer_2_00000049917505561257611940000002343653161651239317_' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 614.5 629.7' style='enable-background:new 0 0 614.5 629.7;' xml:space='preserve'%3E%3Cstyle type='text/css'%3E .st0%7Bfill:%2313100D;%7D%0A%3C/style%3E%3Cg id='ephemera-e'%3E%3Cg id='ephemera-e-2'%3E%3Cpath class='st0' d='M613,0.8l0.3-0.8H438l0,0.1C296.7,6.9,32.1,9.9,0.7,184.4C-7.2,244.3,53,305.7,115.7,306 c46.3,7,123.8-40.8,80.4-88.4c-10,46.7-73.6,13.6-56.9-29.7C178.2,91.4,308.6,52,413.6,39.9l-0.5,0.8l1.2-0.8 c0,0,31.4-3.2,41.5-2.2l-7.9,14c0,0-22.8-0.4-45.3,4.2c-73.3,113.7-217.1,294-261.5,419.6c-15.1,74.2,21,156.6,104,154.1 c114.3-1.7,192.4-117.1,233-225.7l-20.2-0.4c-9.4,35.5-101.4,139.8-148.5,82.5c-11.7-13.9-1.7-37.2,7.1-49.9 c12.3-25.7,58.9-126,71.1-149.4h113.2l36.7-95.4h-96.9l54.5-95.8c28.9,0.1,53.1,8.4,41.6,39h27.4L612.8,1.2l1.7-0.5H613z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
+}
+
+/* LARGER than XX pixels */
+@media only screen and (min-width: 767px) {
+  .blog_article_collection_item:hover .blog_card_image_wrap img {
+    transform: scale(1.15);
+  }
+  
+  .blog_article_collection_item:hover h2 {
+    text-decoration: underline;
+  }
+}
+
+
+.blog_article_social_text {
+  opacity: 0;
+}
+
+.blog_article_social_btn_list:hover + .blog_article_social_text {
+  opacity: 1;
+}
+
+.modal_wrap {
+  display: none;
+}
+
+.slider_progress_bar_wrap::before {
+  content: "";
+  position: absolute;
+  top: -0.75rem;   /* expand click zone upward */
+  bottom: -0.75rem;/* expand click zone downward */
+  left: 0;
+  right: 0;
+  cursor: pointer;
+}
+
+.menu_item_accord_met_vin_wrap.active {
+  display: block;
+}
+
+.menu_item_accord_met_vin_wrap {
+  display: none;
+}
+
+
+.locale_item_wrap:has(.locale_item_link.w--current) {
+  /* your styles for the active language item */
+  opacity: 1;
+  background-color: #000; /* example */
+}
+
+.locale_item_wrap:not(.weglot-link--active) {
+  /* optional: style for non-active languages */
+  opacity: 0.5;
+}
+
+.locale_item_wrap:hover {
+  /* optional: style for non-active languages */
+  opacity: 1;
+}
+
+
+
+.restaurant_horaire_item_wrap.today .restaurant_opened_badge,
+.restaurant_horaire_item_wrap.today .restaurant_cover_absolute {
+  display: inherit;
+}
+
+.menu_item_wrap[data-category$="cktails"] .menu_item_image_wrap {
+  display: inherit;
+}
+
+/* .menu_item_wrap[data-category="plats"] .menu_item_accord_met_vin_wrap {
+  display: inherit;
+} */
+
+.menu_item_wrap[data-category^="vin-"] .menu_item_price_wine_list,
+.menu_item_wrap[data-category^="vin-"] .menu_item_wine_tag_list_wrap,
+.menu_item_wrap[data-category="champagnes-bulles"] .menu_item_price_wine_list,
+.menu_item_wrap[data-category="champagnes-bulles"] .menu_item_wine_tag_list_wrap
+{
+  display: inherit;
+}
+
+
+.menu_item_wrap[data-category="softs-jus-de-fruits"] .menu_item_name_text.u-display-none,
+.menu_item_wrap[data-category$="cktails"] .menu_item_name_text.u-display-none,
+.menu_item_wrap[data-category="bieres-cidres"] .menu_item_name_text.u-display-none,
+.menu_item_wrap[data-category="spiritueux-liqueurs"] .menu_item_name_text.u-display-none {
+  display: block;
+}
+
+.locale_item_wrap {
+  cursor: pointer;
+}
+
+.weglot-container {
+  display: none !important;
+}

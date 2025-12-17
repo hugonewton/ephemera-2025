@@ -1,4 +1,4 @@
-//LAST UPDATE: 24/11/2025
+//LAST UPDATE: 03/12/2025
 
 ///////////////////////////////
 /// REGISTER GSAP PLUGINS
@@ -837,3 +837,58 @@ toggleAbsoluteBottom(".contact_mobile_nav_wrap", ".page_main");
 
 })();
 
+///////////////////////////////
+/// LANG SWITCH
+//////////////////////////////
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const enSwitches = document.querySelectorAll('[data-lang-switch="en"]');
+  const frSwitches = document.querySelectorAll('[data-lang-switch="fr"]');
+
+  function getEnUrl(loc) {
+    let path = loc.pathname || "/";
+    if (!path.startsWith("/")) path = "/" + path;
+
+    // Already on /en/... → on ne change rien
+    if (path === "/en" || path.startsWith("/en/")) {
+      return loc.origin + path + loc.search + loc.hash;
+    }
+
+    // Cas home : "/" -> "/en/"
+    if (path === "/") {
+      path = "/en/";
+    } else {
+      path = "/en" + path;
+    }
+
+    return loc.origin + path + loc.search + loc.hash;
+  }
+
+  function getFrUrl(loc) {
+    let path = loc.pathname || "/";
+    if (!path.startsWith("/")) path = "/" + path;
+
+    if (path === "/en") {
+      path = "/";
+    } else if (path.startsWith("/en/")) {
+      path = path.slice(3) || "/";
+    }
+
+    return loc.origin + path + loc.search + loc.hash;
+  }
+
+  enSwitches.forEach(function (el) {
+    el.addEventListener("click", function (e) {
+      e.preventDefault();
+      window.location.href = getEnUrl(window.location);
+    });
+  });
+
+  frSwitches.forEach(function (el) {
+    el.addEventListener("click", function (e) {
+      e.preventDefault();
+      window.location.href = getFrUrl(window.location);
+    });
+  });
+});
