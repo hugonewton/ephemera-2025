@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("✅ Found .menu_block_wrap:", menuBlock);
 
   // 2️⃣ Look for [data-object='list-for-visibility'] inside it
-  const visibilityList = menuBlock.querySelector('[data-object="list-for-visibility"]');
+  const visibilityList = document.querySelector('[data-object="list-for-visibility"]');
 
   if (!visibilityList) {
     console.warn("❌ No [data-object='list-for-visibility'] found inside .menu_block_wrap");
