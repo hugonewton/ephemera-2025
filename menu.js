@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener("DOMContentLoaded", () => {
     const contentWrap = document.querySelector(".menu_content_wrap");
-    const blockWraps = contentWrap ? contentWrap.querySelectorAll(".menu_block_wrap:not([data-avoid-block='true'])") : [];
+    const blockWraps = contentWrap ? contentWrap.querySelectorAll(".menu_block_wrap:not([data-avoid-block='true']):not([data-availability='no'])") : [];
     const navLayout = document.querySelector(".menu_nav_list_layout");
     const buttonTemplate = navLayout ? navLayout.querySelector(".button_main_wrap") : null;
   
