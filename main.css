@@ -488,3 +488,7 @@ TRANSITIONS
 .menu_block_wrap[data-availability="no"] {
   display: none;
 }
+
+.menu_collection_item:has([data-item-slug="menu-des-fetes"]) {
+  display: none;
+}
