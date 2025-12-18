@@ -71,10 +71,11 @@ window.addEventListener("DOMContentLoaded", () => {
     document.dispatchEvent(new Event("menuAvailabilityReady"));
     return;
   }
-
+  
   const visibilityList = document.querySelector('[data-object="list-for-visibility"]');
-
+  
   if (!visibilityList) {
+    console.warn("❌ No .data-object='list-for-visibility' found");
     menuBlock.setAttribute("data-availability", "no");
     console.log("➡️ data-availability set to 'no' (fallback)");
     document.dispatchEvent(new Event("menuAvailabilityReady"));
