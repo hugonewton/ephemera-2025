@@ -473,6 +473,7 @@ TRANSITIONS
 .menu_item_wrap[data-category="softs-jus-de-fruits"] .menu_item_name_text.u-display-none,
 .menu_item_wrap[data-category$="cktails"] .menu_item_name_text.u-display-none,
 .menu_item_wrap[data-category="bieres-cidres"] .menu_item_name_text.u-display-none,
+.menu_item_wrap[data-category="bieres-cidre"] .menu_item_name_text.u-display-none,
 .menu_item_wrap[data-category="spiritueux-liqueurs"] .menu_item_name_text.u-display-none {
   display: block;
 }
