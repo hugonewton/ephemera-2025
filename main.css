@@ -1,4 +1,4 @@
-/* LAST UPDATE 03/12/2025 */
+/* LAST UPDATE 07/04/2026 */
 
 
 html {
@@ -422,6 +422,10 @@ TRANSITIONS
 }
 
 .menu_item_accord_met_vin_wrap.active {
+  display: block;
+}
+
+div[data-menu-immersif-block] .menu_item_accord_met_vin_wrap {
   display: block;
 }
 

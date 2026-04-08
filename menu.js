@@ -331,15 +331,30 @@ function swapWords(str, map) {
   return out;
 }
 
+function isInsideImmersiveBlock(el) {
+  return !!el.closest('[data-menu-immersif-block]');
+}
+
 const accordButtons = document.querySelectorAll('.button_main_wrap[data-action="accord-met-vin"]');
 
 if (accordButtons.length > 0) {
+  document
+    .querySelectorAll('.menu_item_accord_met_vin_wrap.active')
+    .forEach((item) => {
+      if (isInsideImmersiveBlock(item)) {
+        item.classList.remove('active');
+      }
+    });
+
   accordButtons.forEach((btn) => {
     btn.addEventListener('click', () => {
+      if (isInsideImmersiveBlock(btn)) return;
+
       const layout = btn.closest('.menu_block_layout');
       if (!layout) return;
 
-      const items = layout.querySelectorAll('.menu_item_accord_met_vin_wrap');
+      const items = Array.from(layout.querySelectorAll('.menu_item_accord_met_vin_wrap'))
+        .filter((item) => !isInsideImmersiveBlock(item));
       const isNowActive = !btn.classList.contains('is-active'); // toggling to this state
 
       // Toggle state on button
