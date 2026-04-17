@@ -91,6 +91,11 @@ TRANSITIONS
   transition: transform 1s var(--ease-out-quad);
 }
 
+.restaurant_card_bg_wrap img {
+  transition: transform 1s var(--ease-out-quad);
+}
+
+
 .u-pressed-down {
   transition: transform .1s var(--ease-bounce-back) ;
 }
@@ -496,4 +501,9 @@ div[data-menu-immersif-block] .menu_item_accord_met_vin_wrap {
 
 .menu_collection_item:has([data-item-slug="menu-des-fetes"]) {
   display: none;
+}
+
+
+.nos_restaurants_collection_item:hover .restaurant_card_bg_wrap img {
+  transform: scale(1.1);
 }
