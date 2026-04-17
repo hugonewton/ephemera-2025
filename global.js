@@ -892,3 +892,148 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
+
+///////////////////////////////
+/// ACCORDION ITEM
+//////////////////////////////
+
+if (!window.__accordionGlobalInitialized) {
+  window.__accordionGlobalInitialized = true;
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const globalCloseFns = [];
+    let globalLastOpenId = null;
+
+    document.querySelectorAll(".accordion_wrap").forEach((component, wrapIndex) => {
+      if (component.dataset.scriptInitialized) return;
+      component.dataset.scriptInitialized = "true";
+
+      const closePrevious = component.getAttribute("data-close-previous") !== "false";
+      const closeOnSecondClick = component.getAttribute("data-close-on-second-click") !== "false";
+      const openOnHover = component.getAttribute("data-open-on-hover") === "true";
+      const openByDefault =
+        component.getAttribute("data-open-by-default") !== null &&
+        !isNaN(+component.getAttribute("data-open-by-default"))
+          ? +component.getAttribute("data-open-by-default")
+          : false;
+
+      const list = component.querySelector(".accordion_list") || component;
+      let localPrevIndex = null;
+      const localCloseFns = [];
+
+      function removeCMSList(slot) {
+        const dynList = Array.from(slot.children).find((child) =>
+          child.classList.contains("w-dyn-list")
+        );
+        if (!dynList) return;
+        const nestedItems = dynList?.firstElementChild?.children;
+        if (!nestedItems) return;
+        const staticWrapper = [...slot.children];
+        [...nestedItems].forEach((el) => {
+          if (el.firstElementChild) slot.appendChild(el.firstElementChild);
+        });
+        staticWrapper.forEach((el) => el.remove());
+      }
+      if (list) removeCMSList(list);
+
+      list.querySelectorAll(".accordion_component").forEach((card, cardIndex) => {
+        const button = card.querySelector(".accordion_toggle_button");
+        const content = card.querySelector(".accordion_content_wrap");
+        const icon = card.querySelector(".accordion_toggle_icon");
+        if (!button || !content || !icon) return;
+
+        // Global ID for this specific accordion item
+        const globalId = globalCloseFns.length;
+        card.dataset.accordionId = globalId;
+
+        // ARIA + initial state
+        button.setAttribute("aria-expanded", "false");
+        button.id = `accordion_button_${wrapIndex}_${cardIndex}`;
+        content.id = `accordion_content_${wrapIndex}_${cardIndex}`;
+        button.setAttribute("aria-controls", content.id);
+        content.setAttribute("aria-labelledby", button.id);
+        content.style.display = "none";
+
+        const refresh = () => {
+          if (typeof ScrollTrigger !== "undefined") ScrollTrigger.refresh();
+        };
+
+        const tl = gsap.timeline({
+          paused: true,
+          defaults: { duration: 0.3, ease: "power1.inOut" },
+          onComplete: refresh,
+          onReverseComplete: refresh,
+        });
+
+        tl.set(content, { display: "block" });
+        tl.fromTo(content, { height: 0 }, { height: "auto" });
+        tl.fromTo(icon, { rotate: 0 }, { rotate: -180 }, "<");
+
+        const closeAccordion = () => {
+          if (!card.classList.contains("is-opened")) return;
+          card.classList.remove("is-opened");
+          button.setAttribute("aria-expanded", "false");
+          tl.reverse();
+        };
+
+        // Register locally + globally
+        localCloseFns[cardIndex] = closeAccordion;
+        globalCloseFns[globalId] = closeAccordion;
+
+        const openAccordion = (instant = false) => {
+          // Close previous in same wrapper
+          if (closePrevious && localPrevIndex !== null && localPrevIndex !== cardIndex) {
+            localCloseFns[localPrevIndex]?.();
+          }
+          localPrevIndex = cardIndex;
+
+          // Close all others globally
+          if (closePrevious) {
+            globalCloseFns.forEach((fn, id) => {
+              if (id !== globalId && typeof fn === "function") fn();
+            });
+            globalLastOpenId = globalId;
+          }
+
+          card.classList.add("is-opened");
+          button.setAttribute("aria-expanded", "true");
+          if (instant) {
+            tl.progress(1);
+          } else {
+            tl.play();
+          }
+        };
+
+        if (openByDefault === cardIndex + 1) {
+          openAccordion(true);
+        }
+
+        // 🔥 MAIN CHANGE: click listener on the whole .accordion_component
+        card.addEventListener("click", (e) => {
+          // Don't toggle when clicking inside the content area (so links, buttons, etc. still work normally)
+          if (content.contains(e.target)) return;
+
+          const isOpen = card.classList.contains("is-opened");
+
+          if (isOpen && closeOnSecondClick) {
+            closeAccordion();
+            if (globalLastOpenId === globalId) globalLastOpenId = null;
+          } else if (!isOpen) {
+            openAccordion(false);
+          }
+          // If it's open and closeOnSecondClick is false, do nothing (stays open).
+        });
+
+        // Optional: keep hover-to-open if you use it
+        if (openOnHover) {
+          card.addEventListener("mouseenter", () => {
+            if (!card.classList.contains("is-opened")) {
+              openAccordion(false);
+            }
+          });
+        }
+      });
+    });
+  });
+}
