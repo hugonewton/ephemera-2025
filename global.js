@@ -274,55 +274,173 @@ gsap.matchMedia().add("(min-width: 768px)", () => {
 });
 
 ///////////////////////////////
-/// IFFRAME RESA
+/// IFRAME RESA DEBUG VERSION
 ///////////////////////////////
 
 document.addEventListener("DOMContentLoaded", () => {
+
+  console.log("🚀 IFRAME RESA INIT");
+
   const resaBtns = document.querySelectorAll("[data-resa]");
+  console.log("🔎 resaBtns found:", resaBtns.length);
+
   const iframeResa = document.querySelector(".iframe_resa_embed iframe");
+  console.log("🔎 iframeResa:", iframeResa);
+
   const iframeWrap = document.querySelector(".iframe_resa_wrap");
+  console.log("🔎 iframeWrap:", iframeWrap);
+
   const iframeLayout = document.querySelector(".iframe_resa_layout");
+  console.log("🔎 iframeLayout:", iframeLayout);
+
   const closeBtn = document.querySelector(".iframe_resa_close_wrap");
+  console.log("🔎 closeBtn:", closeBtn);
+
   const iframeContain = document.querySelector(".iframe_resa_contain");
-  
-  if (resaBtns.length && iframeResa && iframeWrap && iframeLayout && closeBtn && iframeContain) {
-    const tlIframeResa = gsap.timeline({ paused: true });
-    
-    tlIframeResa
-    .set(iframeWrap, { display: "block" })
-    .fromTo(iframeWrap, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power2.out" })
-    .fromTo(iframeLayout, { y: 100, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, "<0.1");
-    
-    // Clear iframe src after reverse completes
-    tlIframeResa.eventCallback("onReverseComplete", () => {
-      iframeResa.setAttribute("src", "");
-      iframeWrap.style.display = "none"; // Optionally hide the wrap again
+  console.log("🔎 iframeContain:", iframeContain);
+
+  if (!resaBtns.length) {
+    console.error("❌ No [data-resa] buttons found");
+  }
+
+  if (!iframeResa) {
+    console.error("❌ iframeResa not found (.iframe_resa_embed iframe)");
+  }
+
+  if (!iframeWrap) {
+    console.error("❌ iframeWrap not found (.iframe_resa_wrap)");
+  }
+
+  if (!iframeLayout) {
+    console.error("❌ iframeLayout not found (.iframe_resa_layout)");
+  }
+
+  if (!closeBtn) {
+    console.error("❌ closeBtn not found (.iframe_resa_close_wrap)");
+  }
+
+  if (!iframeContain) {
+    console.error("❌ iframeContain not found (.iframe_resa_contain)");
+  }
+
+  if (
+    resaBtns.length &&
+    iframeResa &&
+    iframeWrap &&
+    iframeLayout &&
+    closeBtn &&
+    iframeContain
+  ) {
+
+    console.log("✅ All iframe resa elements found");
+
+    const tlIframeResa = gsap.timeline({
+      paused: true,
+      onStart: () => {
+        console.log("🎬 Opening iframe animation");
+      },
+      onReverseComplete: () => {
+        console.log("🔄 Reverse complete");
+        iframeResa.setAttribute("src", "");
+        iframeWrap.style.display = "none";
+      }
     });
-    
-    resaBtns.forEach(btn => {
-      btn.addEventListener("click", e => {
+
+    tlIframeResa
+      .set(iframeWrap, { display: "block" })
+      .fromTo(
+        iframeWrap,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          duration: 0.2,
+          ease: "power2.out"
+        }
+      )
+      .fromTo(
+        iframeLayout,
+        { y: 100, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.4,
+          ease: "power3.out"
+        },
+        "<0.1"
+      );
+
+    resaBtns.forEach((btn, index) => {
+
+      console.log(`🟢 Binding click event to resa button #${index + 1}`, btn);
+
+      btn.addEventListener("click", (e) => {
+
+        console.log("🖱️ CLICK DETECTED");
+
         e.preventDefault();
+
         const url = btn.getAttribute("data-resa");
+
+        console.log("🔗 data-resa URL:", url);
+
+        if (!url) {
+          console.error("❌ Missing data-resa attribute value");
+          return;
+        }
+
         iframeResa.setAttribute("src", url);
+
+        console.log("✅ iframe src updated");
+
         tlIframeResa.play();
+
+        console.log("✅ timeline played");
+
         lockScroll();
-        console.log("click resa");
+
+        console.log("✅ scroll locked");
       });
     });
-    
+
     closeBtn.addEventListener("click", () => {
+
+      console.log("❌ Close button clicked");
+
       tlIframeResa.reverse();
+
       unlockScroll();
+
+      console.log("✅ scroll unlocked");
     });
-    
-    // Also close if background (iframe_resa_contain) is clicked
+
     iframeContain.addEventListener("click", (e) => {
+
+      console.log("🖱️ iframeContain clicked");
+
       if (e.target === iframeContain) {
+
+        console.log("✅ Background click detected → closing");
+
         tlIframeResa.reverse();
+
         unlockScroll();
       }
     });
+
+  } else {
+
+    console.error("❌ IFRAME RESA INIT FAILED");
+    console.log({
+      resaBtns,
+      iframeResa,
+      iframeWrap,
+      iframeLayout,
+      closeBtn,
+      iframeContain
+    });
+
   }
+
 });
 
 ///////////////////////////////
