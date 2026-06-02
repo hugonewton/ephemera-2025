@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
 ///////////////////////////////
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".magmatic_birthday_wrap").forEach(wrap => {
+  document.querySelectorAll(".magmatic_birthday_outer_wrap").forEach(wrap => {
     const collectionList = wrap.querySelector(".menu_collection_list_wrapper");
     if (collectionList && collectionList.querySelector(".w-dyn-empty")) {
       wrap.style.display = "none";
