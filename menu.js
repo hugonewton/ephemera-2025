@@ -11,6 +11,19 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     });
   });
+
+///////////////////////////////
+/// DO NOT DISPLAY MAGMATIC BIRTHDAY IF EMPTY
+///////////////////////////////
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".magmatic_birthday_wrap").forEach(wrap => {
+    const collectionList = wrap.querySelector(".menu_collection_list_wrapper");
+    if (collectionList && collectionList.querySelector(".w-dyn-empty")) {
+      wrap.style.display = "none";
+    }
+  });
+});
   
   ///////////////////////////////
   /// DO NOT DISPLAY TAG LIST IF EMPTY
