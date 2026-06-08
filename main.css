@@ -530,12 +530,10 @@ div[data-menu-immersif-block] .menu_item_accord_met_vin_wrap {
 [btn-france]::before {
   content: "";
   position: absolute;
-  inset: -3px;
-  border-radius: inherit;
-  z-index: -2;
+  inset: -200%;
+  z-index: -1;
 
   background: repeating-conic-gradient(
-    from 0deg,
     #0055ff 0deg 18deg,
     #ffffff 18deg 36deg,
     #ff2b3a 36deg 54deg
@@ -544,13 +542,12 @@ div[data-menu-immersif-block] .menu_item_accord_met_vin_wrap {
   animation: france-border-spin 8s linear infinite;
 }
 
-[btn-france]::after {
-  content: "";
-  position: absolute;
-  inset: 3px;
-  border-radius: calc(12px - 3px);
-  background: var(--color-background, #efe6d8);
-  z-index: -1;
+[btn-france] .button_main_contain {
+  position: relative;
+  margin: 3px;
+  border-radius: 9px;
+  background: #efe6d8;
+  z-index: 1;
 }
 
 @keyframes france-border-spin {
