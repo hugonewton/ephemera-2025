@@ -507,3 +507,17 @@ div[data-menu-immersif-block] .menu_item_accord_met_vin_wrap {
 .nos_restaurants_collection_item:hover .restaurant_card_bg_wrap img {
   transform: scale(1.1);
 }
+
+.ribbon_layout {  
+  width: max-content;
+  animation: ribbon-scroll 20s linear infinite;
+}
+
+@keyframes ribbon-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
