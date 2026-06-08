@@ -542,13 +542,6 @@ div[data-menu-immersif-block] .menu_item_accord_met_vin_wrap {
   animation: france-border-spin 8s linear infinite;
 }
 
-[btn-france] .button_main_contain {
-  position: relative;
-  margin: 3px;
-  border-radius: 9px;
-  background: #efe6d8;
-  z-index: 1;
-}
 
 @keyframes france-border-spin {
   to {
