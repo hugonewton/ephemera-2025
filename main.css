@@ -525,3 +525,40 @@ div[data-menu-immersif-block] .menu_item_accord_met_vin_wrap {
     transform: translateX(-50%);
   }
 }
+
+
+[btn-france]::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  z-index: -2;
+
+  background: repeating-conic-gradient(
+    from 0deg,
+    #0055ff 0deg 18deg,
+    #ffffff 18deg 36deg,
+    #ff2b3a 36deg 54deg
+  );
+
+  animation: france-border-spin 8s linear infinite;
+}
+
+[btn-france]::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: calc(12px - 3px);
+  background: var(--color-background, #efe6d8);
+  z-index: -1;
+}
+
+@keyframes france-border-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+[btn-france]:hover::before {
+  animation-duration: 2s;
+}
