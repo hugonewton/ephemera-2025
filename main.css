@@ -552,3 +552,11 @@ div[data-menu-immersif-block] .menu_item_accord_met_vin_wrap {
 [btn-france]:hover::before {
   animation-duration: 2s;
 } */
+
+/* SMALLER than XX pixels */
+@media only screen and (max-width: 767px) {
+  :root {
+    --_spacing---section-space--navbar-height: 3.5rem;
+  }
+}
+
