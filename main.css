@@ -513,7 +513,7 @@ div[data-menu-immersif-block] .menu_item_accord_met_vin_wrap {
 }
 
 .ribbon_layout {  
-  width: max-content;
+  /* width: max-content; */
   /* animation: ribbon-scroll 50s linear infinite; */
 }
 
