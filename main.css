@@ -466,7 +466,8 @@ div[data-menu-immersif-block] .menu_item_accord_met_vin_wrap {
   display: inherit;
 }
 
-.menu_item_wrap[data-category$="cktails"] .menu_item_image_wrap {
+.menu_item_wrap[data-category$="cktails"] .menu_item_image_wrap,
+.menu_item_wrap[data-category$="cocktails-exclusifs"] .menu_item_image_wrap {
   display: inherit;
 }
 
