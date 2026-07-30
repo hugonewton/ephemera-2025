@@ -864,54 +864,37 @@ toggleAbsoluteBottom(".contact_mobile_nav_wrap", ".page_main");
 /// LANG SWITCH
 //////////////////////////////
 
-
 document.addEventListener("DOMContentLoaded", function () {
-  const enSwitches = document.querySelectorAll('[data-lang-switch="en"]');
-  const frSwitches = document.querySelectorAll('[data-lang-switch="fr"]');
+  const SECONDARY_LANGS = ["en", "de", "nl"];
 
-  function getEnUrl(loc) {
+  // Retire un éventuel préfixe de langue → chemin FR de base
+  function stripLang(path) {
+    for (const l of SECONDARY_LANGS) {
+      if (path === "/" + l) return "/";
+      if (path.startsWith("/" + l + "/")) return path.slice(l.length + 1) || "/";
+    }
+    return path;
+  }
+
+  function getUrl(loc, lang) {
     let path = loc.pathname || "/";
     if (!path.startsWith("/")) path = "/" + path;
 
-    // Already on /en/... → on ne change rien
-    if (path === "/en" || path.startsWith("/en/")) {
-      return loc.origin + path + loc.search + loc.hash;
-    }
+    const base = stripLang(path);
+    const newPath =
+      lang === "fr"
+        ? base
+        : base === "/"
+        ? "/" + lang + "/"
+        : "/" + lang + base;
 
-    // Cas home : "/" -> "/en/"
-    if (path === "/") {
-      path = "/en/";
-    } else {
-      path = "/en" + path;
-    }
-
-    return loc.origin + path + loc.search + loc.hash;
+    return loc.origin + newPath + loc.search + loc.hash;
   }
 
-  function getFrUrl(loc) {
-    let path = loc.pathname || "/";
-    if (!path.startsWith("/")) path = "/" + path;
-
-    if (path === "/en") {
-      path = "/";
-    } else if (path.startsWith("/en/")) {
-      path = path.slice(3) || "/";
-    }
-
-    return loc.origin + path + loc.search + loc.hash;
-  }
-
-  enSwitches.forEach(function (el) {
+  document.querySelectorAll("[data-lang-switch]").forEach(function (el) {
     el.addEventListener("click", function (e) {
       e.preventDefault();
-      window.location.href = getEnUrl(window.location);
-    });
-  });
-
-  frSwitches.forEach(function (el) {
-    el.addEventListener("click", function (e) {
-      e.preventDefault();
-      window.location.href = getFrUrl(window.location);
+      window.location.href = getUrl(window.location, el.getAttribute("data-lang-switch"));
     });
   });
 });
