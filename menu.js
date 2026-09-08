@@ -13,6 +13,36 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
 ///////////////////////////////
+/// DO NOT DISPLAY A MENU BLOCK (CATEGORY) IF IT IS EMPTY
+///////////////////////////////
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Helper / technical collection lists that must NOT count as content
+  const IGNORED_LISTS = '[data-object="list-for-visibility"], [data-ignore-empty="true"]';
+
+  document.querySelectorAll(".menu_block_wrap").forEach(block => {
+    const lists = Array.from(block.querySelectorAll(".w-dyn-list"))
+      .filter(list => !list.matches(IGNORED_LISTS) && !list.closest(IGNORED_LISTS));
+
+    // Purely static block (no CMS list inside): nothing to check
+    if (!lists.length) return;
+
+    // Hide each list that renders the Webflow empty state (the grey "No items found" bar)
+    lists.forEach(list => {
+      if (!list.querySelector(".w-dyn-item")) list.style.display = "none";
+    });
+
+    // If none of the lists of this block has a single item, the whole category is empty
+    const hasContent = lists.some(list => list.querySelector(".w-dyn-item"));
+    if (hasContent) return;
+
+    // data-empty-block also removes it from the nav buttons / anchors generation
+    block.setAttribute("data-empty-block", "true");
+    block.style.display = "none";
+  });
+});
+
+///////////////////////////////
 /// DO NOT DISPLAY MAGMATIC BIRTHDAY IF EMPTY
 ///////////////////////////////
 
@@ -118,7 +148,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener("menuAvailabilityReady", () => {
     const contentWrap = document.querySelector(".menu_content_wrap");
-    const blockWraps = contentWrap ? contentWrap.querySelectorAll(".menu_block_wrap:not([data-avoid-block='true']):not([data-availability='no'])") : [];
+    const blockWraps = contentWrap ? contentWrap.querySelectorAll(".menu_block_wrap:not([data-avoid-block='true']):not([data-availability='no']):not([data-empty-block='true'])") : [];
     const navLayout = document.querySelector(".menu_nav_list_layout");
     const buttonTemplate = navLayout ? navLayout.querySelector(".button_main_wrap") : null;
   
@@ -195,7 +225,7 @@ document.addEventListener("menuAvailabilityReady", () => {
     };
   
     // Create a ScrollTrigger for each content block (same order as buttons)
-    const sections = gsap.utils.toArray(".menu_block_wrap:not([data-avoid-block='true'])");
+    const sections = gsap.utils.toArray(".menu_block_wrap:not([data-avoid-block='true']):not([data-availability='no']):not([data-empty-block='true'])");
     sections.forEach((section, i) => {
       ScrollTrigger.create({
         trigger: section,
