@@ -1,4 +1,4 @@
-//Last update: 24/11/2025
+//Last update: 18/09/2026
 
 // Usage
 initializeDraggableForElements(
@@ -261,6 +261,8 @@ document.addEventListener("DOMContentLoaded", () => {
     gsap.utils.toArray(".contact_form_select_wrap").forEach((wrap) => {
       const toggle      = wrap.querySelector(".select_toggle_wrap");
       const toggleLabel = toggle?.querySelector("p");
+      // Placeholder text ("Select one...") so we can reset the visible label later
+      const placeholderLabel = toggleLabel?.textContent?.trim() || "";
       const icon        = toggle?.querySelector(".select_toggle_icon_wrap");
       const list        = wrap.querySelector(".select_list_wrap");
       const options     = wrap.querySelectorAll(".select_collection_item");
@@ -282,6 +284,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const inst = {
         wrap,
         toggle,
+        toggleLabel,
+        placeholderLabel,
+        isCategorySelect,
         tl,
         isOpen: false,
         open() {
@@ -316,10 +321,18 @@ document.addEventListener("DOMContentLoaded", () => {
             "";
   
           if (label && toggleLabel) toggleLabel.textContent = label;
-  
+
+          // Value sent to the backend: the untranslated CMS label, NOT the
+          // visible text — Weglot (server-side) translates it (EN/NL…) and the
+          // backend rejects any label it doesn't know ("Value is not valid.").
+          // The "Select Option Item" component carries a hidden
+          // <p data-label-src data-wg-notranslate> bound to the same CMS name.
+          const value =
+            opt.querySelector("[data-label-src]")?.textContent?.trim() || label;
+
           if (isCategorySelect) {
             // --- CATEGORY SELECT ---
-            setHumanReadable(realCategory, label);
+            setHumanReadable(realCategory, value);
   
             // Does this category require a restaurant?
             const host = opt.matches("[data-activate-choice]")
@@ -341,11 +354,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 new Event("change", { bubbles: true })
               );
             }
+            // Also reset the visible restaurant label, otherwise the UI still
+            // shows the previous restaurant while the hidden value is empty
+            // (user submits, form is blocked with no feedback).
+            instances.forEach((other) => {
+              if (other === inst || other.isCategorySelect) return;
+              if (other.toggleLabel) other.toggleLabel.textContent = other.placeholderLabel;
+            });
             setRestaurantRequired(needsRestaurant);
           } else {
             // --- RESTAURANT SELECT ---
             // User picked a restaurant -> set readable name + store UUID
-            setHumanReadable(realRestaurant, label);
+            setHumanReadable(realRestaurant, value);
   
             if (realStoreId) {
               const storeUuid = opt.getAttribute("data-store-id") || "";
