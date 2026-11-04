@@ -719,6 +719,8 @@ coquille, même croix, même animation. Le panneau est injecté par global.js.
   flex-shrink: 0;
   justify-content: center;
   gap: var(--_spacing---space--2-8px);
+  /* laisse respirer le liseré de la miniature active, sinon il est rogné */
+  padding: var(--_spacing---space--1-4px);
   overflow-x: auto;
   scrollbar-width: none;
 }
@@ -729,7 +731,7 @@ coquille, même croix, même animation. Le panneau est injecté par global.js.
 
 .lightbox_thumb {
   flex: none;
-  width: 6rem;
+  width: 4rem;
   aspect-ratio: 4 / 3;
   border-radius: var(--radius--extra-small);
   overflow: hidden;
@@ -762,7 +764,7 @@ coquille, même croix, même animation. Le panneau est injecté par global.js.
   }
 
   .lightbox_thumb {
-    width: 4rem;
+    width: 3rem;
   }
 
   .lightbox_thumbs {
