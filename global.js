@@ -1180,8 +1180,14 @@ document.addEventListener("DOMContentLoaded", () => {
     render(step > 0 ? 1 : -1);
   }
 
+  // le cadre n'a sa taille qu'une fois la pop-up affichée : on remesure
+  // à l'ouverture, au redimensionnement et quand une image arrive
   img.addEventListener("load", fitFigure);
-  window.addEventListener("resize", fitFigure);
+  if (window.ResizeObserver) {
+    new ResizeObserver(fitFigure).observe(frame);
+  } else {
+    window.addEventListener("resize", fitFigure);
+  }
 
   // --- déclencheurs ---------------------------------------------------------
   galleries.forEach((gallery) => {
