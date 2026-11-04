@@ -8,45 +8,49 @@
 - [x] 4. « Visite Virtuelle » : composant Button Main, variante text-link, lien lié au CMS
 - [x] 5. FAQ : ListClasses `u-flex-vertical-nowrap u-gap-16px-4` → gap de 16 px
 - [x] 6. Cartes « D'autres événements » : composant Button Main, `u-width-full`, sans icône
-- [ ] 7. **Publication Webflow** — bloquée par le classifieur (voir Review)
+- [x] 7. Publication Webflow (faite par Hugo depuis le Designer)
+- [x] 8. Galerie et visite virtuelle passées dans la pop-up de réservation
+      (légende sur l'image + bande de miniatures)
 
 ## Review
 
-**Code** (`global.js` + `main.css`, commit `e651ea0`, déployé sur Cloudflare Pages)
+**Architecture** — `global.js` + `main.css`, déployés par Cloudflare Pages.
 
-Un seul module, deux crochets posés en attribut, donc réutilisables sur n'importe
-quelle page :
+La pop-up de réservation (`.iframe_resa_wrap`) devient **la** pop-up plein écran
+du site. Sa timeline est passée derrière `window.EphemeraOverlay`
+(`openIframe` / `openPanel` / `close`), si bien que la galerie réutilise la même
+coquille, la même croix et la même animation au lieu d'en refaire une.
 
-- `[data-lightbox]` sur un conteneur d'images → chaque `<img>` ouvre un diaporama
-  (flèches, clavier, swipe, compteur, légende = `alt`).
-- `[data-popup-iframe]` sur un bouton/lien → son `href` s'ouvre dans une iframe,
-  la valeur de l'attribut sert de titre.
+Trois déclencheurs, tous en attribut :
 
-La pop-up réutilise les classes `event_recap_item_wrap` / `_bg` de la pop-up récap
-de la page Privatisation, donc le même fond et la même animation GSAP
-(`clipPath: inset(100% 0 0 0)` + `y: 100`). Les icônes sont les SVG des composants
-`SVG / arrow_left`, `SVG / arrow_right` et `Button Close`. Le module sort
-immédiatement si aucun des deux attributs n'est présent : aucun effet sur les
-autres pages, prod comprise.
+| Attribut | Effet |
+|---|---|
+| `[data-resa]` | ouvre l'url de l'attribut dans l'iframe (inchangé) |
+| `[data-popup-iframe]` | ouvre le `href` du lien dans l'iframe — la visite 3D |
+| `[data-lightbox]` | sur un conteneur d'images : ouvre le diaporama |
 
-**Vérifié en navigateur** sur le sous-domaine, attributs injectés à la main faute
-de publication : 8 images, navigation 3/8 → 4/8, fermeture au clic hors cadre et
-à la croix, scroll rendu à Lenis, visite 3D tourmkr qui **s'affiche bien** en
-iframe 1120×630, et 375 px sans débordement.
+La galerie est un panneau injecté dans `.iframe_resa_layout` : légende posée sur
+le bas de la photo sur fond `obscurite-o80`, bande de miniatures qui suit la
+sélection, flèches, clavier et swipe. La boîte de la photo est dimensionnée en JS
+à partir du ratio de l'image et remesurée par un `ResizeObserver` sur le cadre —
+sans ça une image portrait laissait des bandes et la légende débordait.
 
-**Webflow** — breadcrumb, attribut lightbox, gap FAQ, les deux boutons remplacés
-par des instances de `Button Main`, anciens éléments supprimés et classes
-`event_related_cta` / `event_venue_cta` effacées.
+**Webflow** — breadcrumb `/privatisation#nos-evenements` (ancre posée sur la
+section événements de Privatisation), attribut lightbox sur la grille, gap FAQ de
+16 px, les deux CTA remplacés par des instances de `Button Main`, anciens
+éléments supprimés et classes `event_related_cta` / `event_venue_cta` effacées.
 
 Le bouton de carte porte `data-card-button` : son lien propre est neutralisé en
-CSS pour que le composant `Clickable` de la carte garde le clic (un seul lien par
-carte), et son état hover est relayé depuis la carte.
+CSS pour que le `Clickable` de la carte garde le clic — vérifié, un clic au
+centre du bouton atteint bien `/events/byoma-x-stellar`.
+
+**Vérifié sur le sous-domaine publié**, 1440 et 375 : diaporama 8 images avec
+navigation et miniatures qui suivent, boîte toujours au ratio de la photo et
+légende exactement à sa largeur, visite 3D qui s'affiche dans la pop-up sans
+nouvel onglet, « Demander un devis » toujours intact (ouverture, fermeture, `src`
+vidé), breadcrumb, gap FAQ à 16 px, aucun débordement horizontal.
 
 **Reste à faire**
 
-1. **Publier** — `publish_site` n'a pas d'option « sous-domaine seulement » et le
-   classifieur le refuse. À lancer depuis le Designer.
-2. Après publication, revérifier le `href` du breadcrumb : la valeur stockée est
-   bonne mais ce champ a déjà mis une publication à se compiler.
-3. Format de date : « OCT 2025 » → « OCTOBRE 2025 ».
-4. Avant toute mise en prod : noindex sur `detail_events` ou l'item DEMO en Draft.
+1. Format de date : « OCT 2025 » → « OCTOBRE 2025 ».
+2. Avant toute mise en prod : noindex sur `detail_events` ou l'item DEMO en Draft.
