@@ -121,6 +121,10 @@ TRANSITIONS
   transition: opacity .3s var(--ease-out-quad);;
 }
 
+.lightbox_thumb {
+  transition: opacity .2s ease, outline-color .2s ease;
+}
+
 
 
 
@@ -627,70 +631,125 @@ div[data-menu-immersif-block] .menu_item_accord_met_vin_wrap {
 
 /* 
 ===============================
-LIGHTBOX / POP-UP MEDIA
+LIGHTBOX GALERIE
 ===============================
-Pop-up construite en JS (voir global.js). Elle reprend le fond et l'animation de
-la pop-up "récap événement", d'où les classes event_recap_* sur le wrapper.
+La galerie s'ouvre dans la pop-up de réservation (.iframe_resa_wrap) : même
+coquille, même croix, même animation. Le panneau est injecté par global.js.
 */
 
-.lightbox_wrap {
+.iframe_resa_wrap.is-gallery .iframe_resa_embed,
+.iframe_resa_wrap.is-gallery .iframe_loader_wrap {
   display: none;
-  align-items: center;
-  justify-content: center;
+}
+
+.lightbox_gallery {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  flex-direction: column;
+  gap: var(--_spacing---space--4-16px);
   padding: var(--_spacing---space--5-24px);
 }
 
-.lightbox_layout {
+.iframe_resa_wrap.is-gallery .lightbox_gallery {
   display: flex;
-  flex-direction: column;
-  gap: var(--_spacing---space--4-16px);
-  width: 100%;
-  max-width: 70rem;
 }
 
-.lightbox_media {
+.lightbox_frame {
+  position: relative;
+  flex: 1;
+  min-height: 0;
   display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: center;
-  width: 100%;
 }
 
-.lightbox_media img {
-  width: auto;
+.lightbox_figure {
+  position: relative;
+  display: flex;
   max-width: 100%;
-  max-height: 72svh;
+  max-height: 100%;
+  border-radius: var(--radius--small);
+  overflow: hidden;
+}
+
+.lightbox_img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
-  border-radius: var(--radius--small);
 }
 
-.lightbox_media iframe {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  max-height: 78svh;
-  border: 0;
-  border-radius: var(--radius--small);
-}
-
-.lightbox_bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--_spacing---space--4-16px);
-  width: 100%;
-}
-
-.lightbox_nav {
-  display: flex;
-  align-items: center;
-  gap: var(--_spacing---space--3-12px);
-  flex-shrink: 0;
-}
-
-.lightbox_close {
+/* légende posée sur le bas de l'image */
+.lightbox_caption {
   position: absolute;
-  top: var(--_spacing---space--5-24px);
-  right: var(--_spacing---space--5-24px);
+  inset: auto 0 0 0;
+  padding: var(--_spacing---space--3-12px) var(--_spacing---space--4-16px);
+  background-color: var(--swatch--obscurite-o80);
+  color: var(--swatch--terre);
+}
+
+.lightbox_caption:empty {
+  display: none;
+}
+
+.lightbox_arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   z-index: 2;
+}
+
+.lightbox_arrow_prev {
+  left: var(--_spacing---space--3-12px);
+}
+
+.lightbox_arrow_next {
+  right: var(--_spacing---space--3-12px);
+}
+
+.lightbox_frame.is-single .lightbox_arrow {
+  display: none;
+}
+
+.lightbox_thumbs {
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  gap: var(--_spacing---space--2-8px);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.lightbox_thumbs::-webkit-scrollbar {
+  display: none;
+}
+
+.lightbox_thumb {
+  flex: none;
+  width: 6rem;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius--extra-small);
+  overflow: hidden;
+  cursor: pointer;
+  opacity: .4;
+  outline: var(--border-width--main) solid transparent;
+  outline-offset: 2px;
+}
+
+.lightbox_thumb.is-active {
+  opacity: 1;
+  outline-color: var(--swatch--terre);
+}
+
+.lightbox_thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 [data-lightbox].is-lightbox-ready img {
@@ -699,10 +758,16 @@ la pop-up "récap événement", d'où les classes event_recap_* sur le wrapper.
 
 /* SMALLER than XX pixels */
 @media only screen and (max-width: 767px) {
-  .lightbox_bar {
-    flex-direction: column-reverse;
-    align-items: center;
-    text-align: center;
+  .lightbox_gallery {
+    padding: var(--_spacing---space--3-12px);
+  }
+
+  .lightbox_thumb {
+    width: 4rem;
+  }
+
+  .lightbox_thumbs {
+    justify-content: flex-start;
   }
 }
 
