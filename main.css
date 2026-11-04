@@ -99,6 +99,19 @@ TRANSITIONS
   transition: transform 1s var(--ease-out-quad);
 }
 
+.event_related_img {
+  transition: transform 1s var(--ease-out-quad);
+}
+
+.event_related_logo {
+  transition: opacity .3s ease;
+}
+
+.event_hero_breadcrumb_link,
+.event_faq_more_link {
+  transition: opacity .2s ease;
+}
+
 
 .u-pressed-down {
   transition: transform .1s var(--ease-bounce-back) ;
@@ -373,6 +386,28 @@ TRANSITIONS
   
   .event_item_wrap:hover .event_item_logo_wrap {
     opacity: 0;
+  }
+}
+
+
+/* page detail_events */
+/* LARGER than XX pixels */
+@media only screen and (min-width: 767px) {
+  .event_related_card:hover .event_related_img {
+    transform: scale(1.1);
+  }
+
+  .event_related_card:hover .event_related_logo {
+    opacity: 0;
+  }
+
+  .event_related_card:hover .event_related_name {
+    text-decoration: underline;
+  }
+
+  .event_hero_breadcrumb_link:hover,
+  .event_faq_more_link:hover {
+    opacity: .7;
   }
 }
 
