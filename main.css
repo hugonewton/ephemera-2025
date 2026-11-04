@@ -623,3 +623,107 @@ div[data-menu-immersif-block] .menu_item_accord_met_vin_wrap {
   }
 }
 
+
+
+/* 
+===============================
+LIGHTBOX / POP-UP MEDIA
+===============================
+Pop-up construite en JS (voir global.js). Elle reprend le fond et l'animation de
+la pop-up "récap événement", d'où les classes event_recap_* sur le wrapper.
+*/
+
+.lightbox_wrap {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: var(--_spacing---space--5-24px);
+}
+
+.lightbox_layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--_spacing---space--4-16px);
+  width: 100%;
+  max-width: 70rem;
+}
+
+.lightbox_media {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.lightbox_media img {
+  width: auto;
+  max-width: 100%;
+  max-height: 72svh;
+  object-fit: contain;
+  border-radius: var(--radius--small);
+}
+
+.lightbox_media iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 78svh;
+  border: 0;
+  border-radius: var(--radius--small);
+}
+
+.lightbox_bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--_spacing---space--4-16px);
+  width: 100%;
+}
+
+.lightbox_nav {
+  display: flex;
+  align-items: center;
+  gap: var(--_spacing---space--3-12px);
+  flex-shrink: 0;
+}
+
+.lightbox_close {
+  position: absolute;
+  top: var(--_spacing---space--5-24px);
+  right: var(--_spacing---space--5-24px);
+  z-index: 2;
+}
+
+[data-lightbox].is-lightbox-ready img {
+  cursor: zoom-in;
+}
+
+/* SMALLER than XX pixels */
+@media only screen and (max-width: 767px) {
+  .lightbox_bar {
+    flex-direction: column-reverse;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+
+/* 
+===============================
+BOUTON DÉCORATIF DANS UNE CARTE
+===============================
+La carte entière est le lien (composant Clickable) : on neutralise le lien propre
+du bouton et on relaie son état hover depuis la carte.
+*/
+
+[data-card-button] .clickable_wrap {
+  display: none;
+}
+
+/* LARGER than XX pixels */
+@media only screen and (min-width: 767px) {
+  .event_related_card:hover [data-card-button] {
+    border-color: var(--_button-style---border-hover);
+    background-color: var(--_button-style---background-hover);
+    color: var(--_button-style---text-hover);
+  }
+}

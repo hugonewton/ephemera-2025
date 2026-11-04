@@ -1043,3 +1043,184 @@ if (!window.__accordionGlobalInitialized) {
     });
   });
 }
+
+
+///////////////////////////////
+/// LIGHTBOX & POP-UP MEDIA (universelle)
+//////////////////////////////
+
+/* Une seule pop-up, deux déclencheurs. Elle reprend le fond, l'animation et les
+   icônes de la pop-up "récap événement" de la page Privatisation :
+   - [data-lightbox]      sur un conteneur d'images -> chaque <img> ouvre un
+                          diaporama (flèches, clavier, swipe).
+   - [data-popup-iframe]  sur un bouton/lien -> son href s'ouvre dans une iframe.
+                          La valeur de l'attribut sert de titre à l'iframe.
+   Sans JS les liens restent cliquables et ouvrent la cible normalement. */
+
+(function () {
+  const galleries = document.querySelectorAll("[data-lightbox]");
+  const iframeTriggers = document.querySelectorAll("[data-popup-iframe]");
+  if (!galleries.length && !iframeTriggers.length) return;
+  if (typeof gsap === "undefined") { console.warn("[Lightbox] GSAP missing"); return; }
+
+  // Icônes du site : composants SVG / arrow_left, SVG / arrow_right et Button Close
+  const ARROW_LEFT = '<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 538 443" fill="none" aria-hidden="true" class="u-svg"><path d="M12.6973 252.451L189.807 429.5C206.323 446.872 233.761 447.571 251.085 431.06C268.462 414.549 269.162 387.12 252.645 369.803C252.161 369.265 251.623 368.781 251.139 368.243L146.444 263.745L494.637 263.745C518.578 263.745 538 244.33 538 220.397C538 196.464 518.578 177.049 494.637 177.049L147.412 177.049L251.139 73.1968C267.655 55.8253 266.956 28.3967 249.578 11.9395C232.847 -3.97987 206.538 -3.97987 189.807 11.9395L12.6973 188.989C4.51969 197.11 -0.0533074 208.135 0.00049355 219.644C0.000493583 220.021 0.000493612 220.343 0.000493644 220.72C0.000493677 221.096 0.000493706 221.419 0.000493738 221.795C0.000494745 233.305 4.57349 244.33 12.6973 252.451Z" fill="currentColor"></path></svg>';
+  const ARROW_RIGHT = '<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 538 443" fill="none" aria-hidden="true" class="u-svg"><path d="M525.303 190.549L348.193 13.4999C331.677 -3.87161 304.239 -4.57077 286.915 11.9402C269.538 28.4512 268.838 55.8798 285.355 73.1975C285.839 73.7353 286.377 74.2193 286.861 74.7572L391.556 179.255L43.3628 179.255C19.4218 179.255 0 198.67 0 222.603C0 246.536 19.4218 265.951 43.3628 265.951L390.588 265.951L286.861 369.803C270.345 387.175 271.044 414.603 288.422 431.061C305.153 446.98 331.461 446.98 348.193 431.061L525.303 254.011C533.48 245.89 538.053 234.865 537.999 223.356C537.999 222.979 537.999 222.657 537.999 222.28C537.999 221.904 537.999 221.581 537.999 221.205C537.999 209.695 533.426 198.67 525.303 190.549Z" fill="currentColor"></path></svg>';
+  const CLOSE_ICON = '<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 26 26" fill="none" aria-hidden="true" class="u-svg"><path d="M2 2L24.6274 24.6274" class="u-path"></path><path d="M2 25L24.6274 2.37258" class="u-path"></path></svg>';
+
+  const arrow = (dir, icon) =>
+    '<div class="arrow_item_wrap u-flex-horizontal-nowrap u-justify-content-center u-pressed-down u-pointer-on" data-lightbox-dir="' + dir + '">' +
+      '<div class="arrow_svg_wrap">' + icon + '</div>' +
+    '</div>';
+
+  // --- coquille, construite une seule fois ---------------------------------
+  const overlay = document.createElement("div");
+  overlay.className = "lightbox_wrap event_recap_item_wrap u-position-fixed u-theme-dark";
+  overlay.setAttribute("data-lenis-prevent", "");
+  overlay.setAttribute("role", "dialog");
+  overlay.setAttribute("aria-modal", "true");
+  overlay.innerHTML =
+    '<div class="lightbox_bg event_recap_item_bg u-cover-absolute u-zindex-negative"></div>' +
+    '<div class="lightbox_layout">' +
+      '<div class="lightbox_media"></div>' +
+      '<div class="lightbox_bar">' +
+        '<div class="lightbox_caption u-text-style-small"></div>' +
+        '<div class="lightbox_nav">' +
+          arrow(-1, ARROW_LEFT) +
+          '<div class="lightbox_count u-text-style-small"></div>' +
+          arrow(1, ARROW_RIGHT) +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="lightbox_close">' +
+      '<div data-wf--button-close--style="primary" data-button=" " class="button_close_wrap">' +
+        '<div aria-hidden="true" class="button_close_icon">' + CLOSE_ICON + '</div>' +
+        '<div class="clickable_wrap u-cover-absolute">' +
+          '<button type="button" class="clickable_btn"><span class="clickable_text u-sr-only">Fermer</span></button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+
+  const bg      = overlay.querySelector(".lightbox_bg");
+  const layout  = overlay.querySelector(".lightbox_layout");
+  const media   = overlay.querySelector(".lightbox_media");
+  const caption = overlay.querySelector(".lightbox_caption");
+  const count   = overlay.querySelector(".lightbox_count");
+  const nav     = overlay.querySelector(".lightbox_nav");
+
+  gsap.set(overlay, { display: "none" });
+
+  const tl = gsap.timeline({
+    paused: true,
+    onStart: () => { gsap.set(overlay, { display: "flex" }); lockScroll(); },
+    onReverseComplete: () => { gsap.set(overlay, { display: "none" }); media.innerHTML = ""; unlockScroll(); }
+  })
+  .from(bg,     { autoAlpha: 0, duration: 0.3, ease: "power2.out" }, 0)
+  .from(layout, { clipPath: "inset(100% 0 0 0)", y: 100, duration: 0.5, ease: "power3.out" }, "<");
+
+  let slides = [];
+  let index = 0;
+  let isOpen = false;
+
+  function render() {
+    const slide = slides[index];
+    if (!slide) return;
+    media.innerHTML = "";
+
+    if (slide.type === "iframe") {
+      const frame = document.createElement("iframe");
+      frame.src = slide.src;
+      frame.title = slide.caption || "";
+      frame.setAttribute("allowfullscreen", "");
+      frame.setAttribute("loading", "lazy");
+      media.appendChild(frame);
+    } else {
+      const img = document.createElement("img");
+      img.src = slide.src;
+      if (slide.srcset) img.srcset = slide.srcset;
+      img.sizes = "(max-width: 767px) 92vw, 70rem";
+      img.alt = slide.caption || "";
+      media.appendChild(img);
+    }
+
+    caption.textContent = slide.caption || "";
+    count.textContent = slides.length > 1 ? (index + 1) + " / " + slides.length : "";
+    nav.style.display = slides.length > 1 ? "" : "none";
+  }
+
+  function open(list, start) {
+    slides = list;
+    index = start || 0;
+    render();
+    isOpen = true;
+    tl.play(0);
+  }
+
+  function close() {
+    if (!isOpen) return;
+    isOpen = false;
+    if (tl.isActive()) tl.progress(1);
+    tl.reverse();
+  }
+
+  function go(step) {
+    if (slides.length < 2) return;
+    index = (index + step + slides.length) % slides.length;
+    render();
+  }
+
+  // --- déclencheurs ---------------------------------------------------------
+  galleries.forEach((gallery) => {
+    const images = Array.from(gallery.querySelectorAll("img"));
+    if (!images.length) return;
+    gallery.classList.add("is-lightbox-ready");
+
+    images.forEach((img, i) => {
+      img.addEventListener("click", () => {
+        open(images.map((el) => ({
+          type: "image",
+          src: el.currentSrc || el.src,
+          srcset: el.getAttribute("srcset"),
+          caption: el.getAttribute("alt")
+        })), i);
+      });
+    });
+  });
+
+  iframeTriggers.forEach((trigger) => {
+    const link = trigger.matches("a") ? trigger : trigger.querySelector("a[href]");
+    if (!link) return;
+    const url = link.getAttribute("href");
+    if (!url || url === "#") return;
+
+    trigger.addEventListener("click", (e) => {
+      e.preventDefault();
+      open([{ type: "iframe", src: url, caption: trigger.getAttribute("data-popup-iframe") }], 0);
+    });
+  });
+
+  // --- fermeture et navigation ---------------------------------------------
+  overlay.addEventListener("click", (e) => {
+    const arrowBtn = e.target.closest("[data-lightbox-dir]");
+    if (arrowBtn) { go(parseInt(arrowBtn.getAttribute("data-lightbox-dir"), 10)); return; }
+    if (e.target.closest(".button_close_wrap")) { close(); return; }
+    if (!layout.contains(e.target)) close();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (!isOpen) return;
+    if (e.key === "Escape")     { e.preventDefault(); close(); }
+    if (e.key === "ArrowLeft")  { e.preventDefault(); go(-1); }
+    if (e.key === "ArrowRight") { e.preventDefault(); go(1); }
+  });
+
+  let touchStartX = null;
+  media.addEventListener("touchstart", (e) => { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
+  media.addEventListener("touchend", (e) => {
+    if (touchStartX === null) return;
+    const delta = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(delta) > 40) go(delta < 0 ? 1 : -1);
+    touchStartX = null;
+  }, { passive: true });
+})();
