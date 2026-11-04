@@ -391,6 +391,33 @@ TRANSITIONS
 
 
 /* page detail_events */
+
+/* puces au sigle Ephemera — masque sur currentColor pour suivre le thème */
+.event_service_body ul {
+  list-style: none;
+  padding-left: 1.2em;
+}
+
+.event_service_body ul li {
+  position: relative;
+}
+
+.event_service_body ul li::before {
+  content: '';
+  position: absolute;
+  left: -1.2em;
+  top: .3em;
+  width: .7em;
+  height: .7em;
+  background-color: currentColor;
+  -webkit-mask-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-8'%3F%3E%3C!-- Generator: Adobe Illustrator 27.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0 --%3E%3Csvg version='1.1' id='Layer_2_00000049917505561257611940000002343653161651239317_' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 614.5 629.7' style='enable-background:new 0 0 614.5 629.7;' xml:space='preserve'%3E%3Cstyle type='text/css'%3E .st0%7Bfill:%2313100D;%7D%0A%3C/style%3E%3Cg id='ephemera-e'%3E%3Cg id='ephemera-e-2'%3E%3Cpath class='st0' d='M613,0.8l0.3-0.8H438l0,0.1C296.7,6.9,32.1,9.9,0.7,184.4C-7.2,244.3,53,305.7,115.7,306 c46.3,7,123.8-40.8,80.4-88.4c-10,46.7-73.6,13.6-56.9-29.7C178.2,91.4,308.6,52,413.6,39.9l-0.5,0.8l1.2-0.8 c0,0,31.4-3.2,41.5-2.2l-7.9,14c0,0-22.8-0.4-45.3,4.2c-73.3,113.7-217.1,294-261.5,419.6c-15.1,74.2,21,156.6,104,154.1 c114.3-1.7,192.4-117.1,233-225.7l-20.2-0.4c-9.4,35.5-101.4,139.8-148.5,82.5c-11.7-13.9-1.7-37.2,7.1-49.9 c12.3-25.7,58.9-126,71.1-149.4h113.2l36.7-95.4h-96.9l54.5-95.8c28.9,0.1,53.1,8.4,41.6,39h27.4L612.8,1.2l1.7-0.5H613z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
+  mask-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-8'%3F%3E%3C!-- Generator: Adobe Illustrator 27.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0 --%3E%3Csvg version='1.1' id='Layer_2_00000049917505561257611940000002343653161651239317_' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 614.5 629.7' style='enable-background:new 0 0 614.5 629.7;' xml:space='preserve'%3E%3Cstyle type='text/css'%3E .st0%7Bfill:%2313100D;%7D%0A%3C/style%3E%3Cg id='ephemera-e'%3E%3Cg id='ephemera-e-2'%3E%3Cpath class='st0' d='M613,0.8l0.3-0.8H438l0,0.1C296.7,6.9,32.1,9.9,0.7,184.4C-7.2,244.3,53,305.7,115.7,306 c46.3,7,123.8-40.8,80.4-88.4c-10,46.7-73.6,13.6-56.9-29.7C178.2,91.4,308.6,52,413.6,39.9l-0.5,0.8l1.2-0.8 c0,0,31.4-3.2,41.5-2.2l-7.9,14c0,0-22.8-0.4-45.3,4.2c-73.3,113.7-217.1,294-261.5,419.6c-15.1,74.2,21,156.6,104,154.1 c114.3-1.7,192.4-117.1,233-225.7l-20.2-0.4c-9.4,35.5-101.4,139.8-148.5,82.5c-11.7-13.9-1.7-37.2,7.1-49.9 c12.3-25.7,58.9-126,71.1-149.4h113.2l36.7-95.4h-96.9l54.5-95.8c28.9,0.1,53.1,8.4,41.6,39h27.4L612.8,1.2l1.7-0.5H613z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
 /* LARGER than XX pixels */
 @media only screen and (min-width: 767px) {
   .event_related_card:hover .event_related_img {
