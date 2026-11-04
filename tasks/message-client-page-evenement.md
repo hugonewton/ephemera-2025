@@ -1,5 +1,30 @@
 # Message client — page événement de test
 
+## Version WhatsApp
+
+Bonjour ! La page type d'un événement est prête — je l'ai montée avec un cas
+fictif pour que vous la voyiez en vrai :
+
+https://ephemera-2025.webflow.io/events/demo-byoma-stellar
+
+C'est une adresse de test, invisible depuis le site et non référencée. Le
+contenu est factice, c'est la mise en page qui compte.
+
+À essayer : cliquez sur une photo de la galerie, puis sur « Visite Virtuelle »
+en bas de la fiche technique.
+
+Si ça vous convient, je vous envoie par mail la liste de ce qu'il nous faut pour
+chaque événement (textes, photos, chiffres clés, verbatim).
+
+Petit point en attendant : la surface privatisable et les équipements
+événementiels manquent sur les 8 restaurants, d'où les deux lignes vides dans la
+fiche technique. À saisir une fois par restaurant et ça remonte sur toutes les
+pages.
+
+---
+
+## Version e-mail
+
 **Objet :** Page événement — version de test à valider
 
 ---
