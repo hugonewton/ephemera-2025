@@ -665,9 +665,10 @@ coquille, même croix, même animation. Le panneau est injecté par global.js.
   justify-content: center;
 }
 
+/* les dimensions sont posées par global.js pour que la boîte colle à la photo :
+   sans ça une image portrait laisse des bandes et la légende déborde */
 .lightbox_figure {
   position: relative;
-  display: flex;
   max-width: 100%;
   max-height: 100%;
   border-radius: var(--radius--small);
@@ -676,11 +677,9 @@ coquille, même croix, même animation. Le panneau est injecté par global.js.
 
 .lightbox_img {
   display: block;
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* légende posée sur le bas de l'image */

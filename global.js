@@ -1114,7 +1114,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const img     = panel.querySelector(".lightbox_img");
   const caption = panel.querySelector(".lightbox_caption");
   const thumbs  = panel.querySelector(".lightbox_thumbs");
-  const arrows  = panel.querySelector(".lightbox_frame");
+  const frame   = panel.querySelector(".lightbox_frame");
 
   let slides = [];
   let index = 0;
@@ -1135,7 +1135,24 @@ document.addEventListener("DOMContentLoaded", () => {
       thumbs.appendChild(thumb);
     });
     thumbs.style.display = slides.length > 1 ? "" : "none";
-    arrows.classList.toggle("is-single", slides.length < 2);
+    frame.classList.toggle("is-single", slides.length < 2);
+  }
+
+  // la boîte doit coller exactement à la photo : la légende se pose dessus
+  function fitFigure() {
+    const ratio = img.naturalWidth / img.naturalHeight;
+    const frameWidth = frame.clientWidth;
+    const frameHeight = frame.clientHeight;
+    if (!ratio || !frameWidth || !frameHeight) return;
+
+    let width = frameWidth;
+    let height = frameWidth / ratio;
+    if (height > frameHeight) {
+      height = frameHeight;
+      width = frameHeight * ratio;
+    }
+    figure.style.width = width + "px";
+    figure.style.height = height + "px";
   }
 
   function render(dir) {
@@ -1146,6 +1163,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (slide.srcset) img.srcset = slide.srcset; else img.removeAttribute("srcset");
     img.sizes = "(max-width: 767px) 92vw, 80vw";
     img.alt = slide.caption || "";
+    if (img.complete) fitFigure();
     caption.textContent = slide.caption || "";
 
     Array.from(thumbs.children).forEach((thumb, i) => {
@@ -1161,6 +1179,9 @@ document.addEventListener("DOMContentLoaded", () => {
     index = (index + step + slides.length) % slides.length;
     render(step > 0 ? 1 : -1);
   }
+
+  img.addEventListener("load", fitFigure);
+  window.addEventListener("resize", fitFigure);
 
   // --- déclencheurs ---------------------------------------------------------
   galleries.forEach((gallery) => {
