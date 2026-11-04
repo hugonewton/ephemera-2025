@@ -793,3 +793,15 @@ du bouton et on relaie son état hover depuis la carte.
     color: var(--_button-style---text-hover);
   }
 }
+
+
+/* 
+===============================
+RECHERCHE BLOG
+===============================
+*/
+
+/* le champ est dans un form Webflow, qui porte une marge par défaut */
+.blog_search_wrap .w-form {
+  margin-bottom: 0;
+}

@@ -1231,3 +1231,60 @@ document.addEventListener("DOMContentLoaded", () => {
     touchStartX = null;
   }, { passive: true });
 });
+
+///////////////////////////////
+/// RECHERCHE BLOG
+//////////////////////////////
+
+/* Filtre la liste des articles sans recharger la page : les 102 articles sont
+   déjà dans le DOM, on se contente de masquer ceux qui ne correspondent pas.
+   Recherche sur le titre et le résumé, insensible à la casse et aux accents,
+   tous les mots doivent correspondre. */
+
+document.addEventListener("DOMContentLoaded", () => {
+  const wrap = document.querySelector(".blog_search_wrap");
+  const list = document.querySelector(".blog_article_collection_list");
+  if (!wrap || !list) return;
+
+  const input = wrap.querySelector("input");
+  const empty = wrap.querySelector(".blog_search_empty");
+  if (!input) return;
+
+  const items = Array.from(list.children);
+  if (!items.length) return;
+
+  const normalise = (value) =>
+    (value || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+
+  const index = items.map((item) =>
+    normalise(
+      [".blog_card_heading_wrap", ".blog_card_desc_wrap"]
+        .map((selector) => item.querySelector(selector))
+        .filter(Boolean)
+        .map((el) => el.textContent)
+        .join(" ")
+    )
+  );
+
+  // valeur de repli, écrasée dès que le champ en a une dans le Designer
+  if (!input.placeholder) input.placeholder = "Rechercher un article";
+
+  // le champ vit dans un formulaire Webflow : Entrée ne doit pas le poster
+  const form = input.closest("form");
+  if (form) form.addEventListener("submit", (e) => e.preventDefault());
+
+  function filter() {
+    const terms = normalise(input.value).split(/\s+/).filter(Boolean);
+    let shown = 0;
+
+    items.forEach((item, i) => {
+      const match = terms.every((term) => index[i].includes(term));
+      item.style.display = match ? "" : "none";
+      if (match) shown += 1;
+    });
+
+    if (empty) empty.style.display = shown ? "none" : "block";
+  }
+
+  input.addEventListener("input", filter);
+});
