@@ -26,15 +26,19 @@ Mesuré sur la page publiée, en injectant le champ à la main :
 « team building » → 2 résultats, « evenement » → 10, « montpellier » → 18,
 « zzzzz » → 0 avec le message, champ vidé → les 100 reviennent.
 
+### Focus du champ (2026-11-05)
+Webflow repasse le focus de ses inputs natifs en `#3898ec`. Ça ne touchait que ce
+champ : les champs du formulaire de contact viennent d'un composant et n'ont pas
+la classe `w-input`, donc jamais le bleu. Remplacé par la couleur du thème dans
+`main.css` — un repère de focus reste visible, ce qui compte pour la navigation
+au clavier. Vérifié au clic réel : les quatre bords passent en crème.
+
 ## À faire — pour toi
 
-1. **Publier** le site (le garde-fou de Claude Code refuse `publish_site`).
-2. **Format de la date** : Webflow n'expose pas le format d'affichage par API.
-   Sur le nouveau bloc date, choisir un format en toutes lettres
-   (« 6 novembre 2026 ») plutôt que le format anglais par défaut.
-   Même geste que sur la page événement pour « OCTOBRE 2025 ».
-3. Le **placeholder** du champ est posé par le JS faute d'écriture d'attribut en
-   fin de session. Si tu le renseignes dans le Designer, c'est le tien qui gagne.
+**Format de la date** : Webflow n'expose pas le format d'affichage par API. Le
+bloc sort aujourd'hui « May 6, 2026 ». À passer en français dans le Designer —
+soit `01.11.2026` comme sur les cartes du blog, soit en toutes lettres. Même
+geste que « OCTOBRE 2025 » sur la page événement.
 
 ## À signaler au client
 
