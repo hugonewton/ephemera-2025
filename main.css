@@ -805,3 +805,9 @@ RECHERCHE BLOG
 .blog_search_wrap .w-form {
   margin-bottom: 0;
 }
+
+/* Webflow repasse le focus de ses inputs natifs en bleu (#3898ec) : hors DA.
+   On garde un repère visible, mais à la couleur du thème. */
+.blog_search_wrap .form_main_field:focus {
+  border-color: var(--_theme---text);
+}
