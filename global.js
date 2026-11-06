@@ -1246,7 +1246,11 @@ document.addEventListener("DOMContentLoaded", () => {
    l'état (aucun / singulier / pluriel), le reste est du contenu Webflow.
 
    L'index est relu à chaque frappe plutôt que mis en cache : si la page est
-   traduite, c'est le texte réellement affiché qui est cherché. */
+   traduite, c'est le texte réellement affiché qui est cherché.
+
+   Le site est traduit par Weglot (fr/en/nl/de). Ce que le visiteur tape ne doit
+   évidemment pas être traduit : on marque le terme et le compteur avec la classe
+   d'exclusion configurée côté Weglot. */
 
 document.addEventListener("DOMContentLoaded", () => {
   const wrap = document.querySelector(".blog_search_wrap");
@@ -1279,6 +1283,10 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!input.placeholder) input.placeholder = "Rechercher un article";
   // le nombre de résultats est annoncé aux lecteurs d'écran
   if (summary) summary.setAttribute("role", "status");
+
+  // hors traduction : ce sont des données, pas du texte d'interface.
+  // Posé avant toute saisie, donc avant que Weglot ait quoi que ce soit à voir.
+  [count, term].forEach((el) => el && el.classList.add("weglot-exclude"));
 
   // le champ vit dans un formulaire Webflow : Entrée ne doit pas le poster
   const form = input.closest("form");
