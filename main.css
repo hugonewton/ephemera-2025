@@ -811,3 +811,33 @@ RECHERCHE BLOG
 .blog_search_wrap .form_main_field:focus {
   border-color: var(--_theme---text);
 }
+
+
+/* 
+===============================
+BLOCS CMS VIDES — PAGE ÉVÉNEMENT
+===============================
+Webflow pose lui-même `w-dyn-bind-empty` sur un élément dont le champ CMS est
+vide, et le masque. Mais la coquille autour reste : un bandeau crème sans
+citation, une ligne de fiche technique réduite à son libellé. On escamote donc
+le bloc entier.
+
+La visibilité conditionnelle native de Webflow fait la même chose et sort
+l'élément du HTML, mais elle n'est pas pilotable par API : elle se pose à la
+main, élément par élément, dans le Designer.
+*/
+
+/* pas de citation, pas de section verbatim */
+.event_verbatim_wrap:has(.event_verbatim_text.w-dyn-bind-empty) {
+  display: none;
+}
+
+/* une ligne de fiche technique sans valeur ne s'affiche pas */
+.event_specs_row:has(.event_specs_val.w-dyn-bind-empty) {
+  display: none;
+}
+
+/* pas de photos, pas de galerie — évite le « No items found. » de Webflow */
+.event_gallery_wrap:has(.w-dyn-empty:not(.w-dyn-hide)) {
+  display: none;
+}
