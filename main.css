@@ -803,7 +803,45 @@ RECHERCHE BLOG
 
 /* le champ est dans un form Webflow, qui porte une marge par défaut */
 .blog_search_wrap .w-form {
+  position: relative;
   margin-bottom: 0;
+}
+
+/* place pour la croix d'effacement */
+.blog_search_wrap .form_main_field {
+  padding-right: var(--_spacing---space--7-40px);
+}
+
+.blog_search_wrap .button_close_wrap.blog_search_clear {
+  position: absolute;
+  top: 50%;
+  right: var(--_spacing---space--2-8px);
+  transform: translateY(-50%);
+  width: 1.75rem;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* le résumé et la croix n'apparaissent qu'une fois une recherche tapée */
+.blog_search_wrap.has-query .button_close_wrap.blog_search_clear {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.blog_search_wrap.has-query .blog_search_summary {
+  display: flex;
+}
+
+/* une seule formulation à la fois : aucun / singulier / pluriel.
+   Les trois vivent dans le HTML pour rester traduisibles. */
+.blog_search_wrap[data-results="none"] .blog_search_none,
+.blog_search_wrap[data-results="one"] .blog_search_one,
+.blog_search_wrap[data-results="many"] .blog_search_many {
+  display: inline;
+}
+
+.blog_search_wrap[data-results="none"] .blog_search_count {
+  display: none;
 }
 
 /* Webflow repasse le focus de ses inputs natifs en bleu (#3898ec) : hors DA.

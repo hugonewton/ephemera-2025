@@ -1236,10 +1236,17 @@ document.addEventListener("DOMContentLoaded", () => {
 /// RECHERCHE BLOG
 //////////////////////////////
 
-/* Filtre la liste des articles sans recharger la page : les 102 articles sont
-   déjà dans le DOM, on se contente de masquer ceux qui ne correspondent pas.
-   Recherche sur le titre et le résumé, insensible à la casse et aux accents,
-   tous les mots doivent correspondre. */
+/* Filtre la liste des articles sans recharger la page : ils sont déjà tous dans
+   le DOM, on masque ceux qui ne correspondent pas. Recherche sur le titre et le
+   résumé, insensible à la casse et aux accents, tous les mots doivent sortir.
+
+   Le résumé sous le champ (« 12 résultats pour "paris" ») est assemblé à partir
+   d'éléments qui vivent dans le HTML : aucune phrase n'est écrite ici, sinon
+   elle échapperait à la traduction. Le JS ne pose que le nombre, le terme et
+   l'état (aucun / singulier / pluriel), le reste est du contenu Webflow.
+
+   L'index est relu à chaque frappe plutôt que mis en cache : si la page est
+   traduite, c'est le texte réellement affiché qui est cherché. */
 
 document.addEventListener("DOMContentLoaded", () => {
   const wrap = document.querySelector(".blog_search_wrap");
@@ -1247,44 +1254,62 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!wrap || !list) return;
 
   const input = wrap.querySelector("input");
-  const empty = wrap.querySelector(".blog_search_empty");
+  const summary = wrap.querySelector(".blog_search_summary");
+  const count = wrap.querySelector(".blog_search_count");
+  const term = wrap.querySelector(".blog_search_term");
+  const clear = wrap.querySelector(".blog_search_clear");
   if (!input) return;
 
   const items = Array.from(list.children);
   if (!items.length) return;
 
   const normalise = (value) =>
-    (value || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+    (value || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-  const index = items.map((item) =>
+  const haystack = (item) =>
     normalise(
       [".blog_card_heading_wrap", ".blog_card_desc_wrap"]
         .map((selector) => item.querySelector(selector))
         .filter(Boolean)
         .map((el) => el.textContent)
         .join(" ")
-    )
-  );
+    );
 
   // valeur de repli, écrasée dès que le champ en a une dans le Designer
   if (!input.placeholder) input.placeholder = "Rechercher un article";
+  // le nombre de résultats est annoncé aux lecteurs d'écran
+  if (summary) summary.setAttribute("role", "status");
 
   // le champ vit dans un formulaire Webflow : Entrée ne doit pas le poster
   const form = input.closest("form");
   if (form) form.addEventListener("submit", (e) => e.preventDefault());
 
   function filter() {
-    const terms = normalise(input.value).split(/\s+/).filter(Boolean);
+    const query = input.value.trim();
+    const terms = normalise(query).split(/\s+/).filter(Boolean);
     let shown = 0;
 
-    items.forEach((item, i) => {
-      const match = terms.every((term) => index[i].includes(term));
+    items.forEach((item) => {
+      const text = terms.length ? haystack(item) : "";
+      const match = !terms.length || terms.every((word) => text.includes(word));
       item.style.display = match ? "" : "none";
       if (match) shown += 1;
     });
 
-    if (empty) empty.style.display = shown ? "none" : "block";
+    wrap.classList.toggle("has-query", terms.length > 0);
+    wrap.setAttribute("data-results", shown === 0 ? "none" : shown === 1 ? "one" : "many");
+    if (count) count.textContent = shown;
+    if (term) term.textContent = "\u00AB\u00A0" + query + "\u00A0\u00BB";
   }
 
   input.addEventListener("input", filter);
+
+  if (clear) {
+    clear.addEventListener("click", (e) => {
+      e.preventDefault();
+      input.value = "";
+      filter();
+      input.focus();
+    });
+  }
 });
