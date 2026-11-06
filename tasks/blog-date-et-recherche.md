@@ -33,6 +33,36 @@ la classe `w-input`, donc jamais le bleu. Remplacé par la couleur du thème dan
 `main.css` — un repère de focus reste visible, ce qui compte pour la navigation
 au clavier. Vérifié au clic réel : les quatre bords passent en crème.
 
+### Retour de résultats (2026-11-06)
+Sous le champ : **« 44 résultats pour « paris » »**, avec le nombre et le terme
+mis en avant, le singulier géré (« 1 résultat pour… »), le cas zéro
+(« Aucun résultat pour… ») et une croix pour vider le champ — le composant
+`Button Close` du site, pas une croix maison. Le résumé porte `role="status"` :
+les lecteurs d'écran annoncent le nombre à chaque frappe.
+
+**Traduction.** Aucune phrase n'est écrite dans le JavaScript. Les trois
+formulations (« Aucun résultat pour », « résultat pour », « résultats pour »)
+sont de vrais éléments de la page, donc traduisibles comme n'importe quel texte
+Webflow ; le script ne pose que le nombre, le terme cherché et laquelle des trois
+s'applique. C'est le point qui compte : une chaîne construite en JS échappe à
+Weglot comme à la localisation Webflow.
+
+Et l'index est **relu à chaque frappe** au lieu d'être mis en cache au
+chargement : c'est le texte réellement affiché qui est cherché, donc la version
+traduite si la page l'est.
+
+⚠️ **Impossible à tester aujourd'hui** : Weglot est **commenté** dans le code de
+pied de page du site, et les locales Webflow sont désactivées (`enabled: false`,
+aucune langue secondaire). Le site est monolingue. Le dispositif est prêt, il ne
+sera vérifiable qu'une fois une langue réellement activée.
+
+Réserve : trois formulations couvrent le français et l'anglais. Une langue à plus
+de deux formes de pluriel (polonais, russe…) demanderait un emplacement de plus.
+
+Mesuré en ligne : « paris » → 44, « Montpellier » → 19, « evenement » → 10
+(accents ignorés), « cadeaux » → 1 résultat au singulier, « zzzz » → aucun
+résultat, champ vidé → les 100 reviennent. 1440 et 375, sans débordement.
+
 ## À faire — pour toi
 
 **Format de la date** : Webflow n'expose pas le format d'affichage par API. Le
