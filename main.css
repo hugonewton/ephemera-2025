@@ -841,3 +841,8 @@ main, élément par élément, dans le Designer.
 .event_gallery_wrap:has(.w-dyn-empty:not(.w-dyn-hide)) {
   display: none;
 }
+
+/* pas d'url de visite 3D sur le restaurant lié : pas de bouton mort à l'écran */
+[data-popup-iframe]:has(a[href="#"]) {
+  display: none;
+}
