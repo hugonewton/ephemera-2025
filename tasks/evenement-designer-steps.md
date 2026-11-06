@@ -54,6 +54,44 @@ Classes supprimées car remplacées par le composant : `event_related_cta`, `eve
 
 ---
 
+## Retours client du 2026-11-06
+
+### Chiffres clés supprimés
+La colonne « Chiffres clés » est retirée de la page, il ne reste que « Ce qu'on a
+mis en place », qui passe en pleine largeur avec une mesure lisible (51 rem).
+Classes supprimées : `event_kpi_col`, `_title`, `_grid`, `_card`, `_value`, `_label`.
+
+Les **9 champs CMS** (`chiffre-1-valeur` … `source-des-chiffres`) sont **laissés en
+place** : les supprimer effacerait les valeurs déjà saisies, et le client peut
+vouloir revenir en arrière. À arbitrer avec lui.
+
+### Blocs vides qui n'apparaissent plus
+Webflow pose lui-même `w-dyn-bind-empty` sur un champ CMS vide et masque le champ,
+mais la coquille autour restait. Règles ajoutées dans `main.css` :
+
+| Bloc | Disparaît quand |
+|---|---|
+| Section verbatim | pas de citation |
+| Ligne de fiche technique | pas de valeur |
+| Section galerie | pas de photo (évitait un « No items found. » en anglais) |
+| Bouton Visite Virtuelle | pas d'url sur le restaurant lié |
+
+La visibilité conditionnelle **native** de Webflow ferait la même chose en sortant
+l'élément du HTML, mais l'API ne sait lier la visibilité qu'à un champ Switch :
+une condition « est renseigné » se pose à la main dans le Designer.
+
+Vérifié sur `/events/byoma-x-stellar`, un vrai item sans restaurant lié : la
+section verbatim et les 7 lignes de fiche technique ont disparu. Et sur la démo,
+« Surface » et « Équipements » — les deux lignes blanches du screen client — ne
+s'affichent plus, le reste est intact.
+
+### Ce qui reste vide sur un item mal rempli
+Sur `/events/byoma-x-stellar`, il manque toujours le titre H1, la photo et le logo
+du lieu, le format et la date. C'est un problème de **contenu**, pas de gabarit :
+l'item n'a pas de restaurant lié. À ne pas masquer — un H1 absent doit se voir.
+
+---
+
 ## Ce qui reste
 
 ### 0. Publier — pour toi
