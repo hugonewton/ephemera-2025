@@ -51,10 +51,25 @@ Et l'index est **relu à chaque frappe** au lieu d'être mis en cache au
 chargement : c'est le texte réellement affiché qui est cherché, donc la version
 traduite si la page l'est.
 
-⚠️ **Impossible à tester aujourd'hui** : Weglot est **commenté** dans le code de
-pied de page du site, et les locales Webflow sont désactivées (`enabled: false`,
-aucune langue secondaire). Le site est monolingue. Le dispositif est prêt, il ne
-sera vérifiable qu'une fois une langue réellement activée.
+**Weglot — ce qu'il faut savoir.** Le bloc `Weglot.initialize` est commenté dans
+le pied de page, et il l'est aussi en production : ce n'est pas par là que Weglot
+arrive. L'intégration Webflow de Weglot l'injecte **côté serveur**, et seulement
+sur le domaine client — d'où son absence sur `ephemera-2025.webflow.io`.
+
+Config lue sur `https://www.ephemera-group.com/en` :
+
+- langues : **fr, en, nl, de**, en sous-répertoire (`/en`, `/nl`, `/de`) ;
+- classe d'exclusion configurée : **`.weglot-exclude`** ;
+- `excluded_paths` : **`START_WITH /blog`**.
+
+⚠️ **Le blog est exclu de la traduction.** C'est pour ça que `/en/blog` redirige
+vers `/blog`. La barre de recherche ne sera donc traduite dans aucune langue tant
+que cette exclusion est en place — ce n'est pas une limite du code. Lever
+l'exclusion revient à faire traduire les 136 articles, et Weglot facture au mot :
+c'est un arbitrage budget, à remonter au client.
+
+Le terme saisi et le compteur portent `weglot-exclude` : ce que tape le visiteur
+ne doit jamais partir à la traduction.
 
 Réserve : trois formulations couvrent le français et l'anglais. Une langue à plus
 de deux formes de pluriel (polonais, russe…) demanderait un emplacement de plus.
