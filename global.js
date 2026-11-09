@@ -1288,7 +1288,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // Posé avant toute saisie, donc avant que Weglot ait quoi que ce soit à voir.
   [count, term].forEach((el) => el && el.classList.add("weglot-exclude"));
 
-  // le champ vit dans un formulaire Webflow : Entrée ne doit pas le poster
+  // Le champ vit dans un formulaire Webflow. Annuler l'évènement `submit` ne
+  // suffit pas : le gestionnaire jQuery de Webflow l'écoute aussi et afficherait
+  // son bandeau « Thank you! Your submission has been received! ». On empêche
+  // donc la touche Entrée de déclencher l'envoi, aucun `submit` n'est émis.
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") e.preventDefault();
+  });
+
   const form = input.closest("form");
   if (form) form.addEventListener("submit", (e) => e.preventDefault());
 

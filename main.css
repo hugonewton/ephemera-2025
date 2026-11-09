@@ -807,6 +807,14 @@ RECHERCHE BLOG
   margin-bottom: 0;
 }
 
+/* ceinture et bretelles : ce formulaire ne s'envoie jamais, donc ses bandeaux
+   de succès et d'erreur n'ont aucune raison d'apparaître. Webflow les affiche
+   en style inline, d'où le !important. */
+.blog_search_wrap .w-form-done,
+.blog_search_wrap .w-form-fail {
+  display: none !important;
+}
+
 /* place pour la croix d'effacement */
 .blog_search_wrap .form_main_field {
   padding-right: var(--_spacing---space--7-40px);
