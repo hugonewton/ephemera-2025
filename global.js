@@ -1248,7 +1248,7 @@ document.addEventListener("DOMContentLoaded", () => {
    L'index est relu à chaque frappe plutôt que mis en cache : si la page est
    traduite, c'est le texte réellement affiché qui est cherché.
 
-   Le site est traduit par Weglot (fr/en/nl/de). Ce que le visiteur tape ne doit
+   Le site est traduit par Weglot (fr, en, nl, de, it). Ce que le visiteur tape ne doit
    évidemment pas être traduit : on marque le terme et le compteur avec la classe
    d'exclusion configurée côté Weglot. */
 
