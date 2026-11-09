@@ -78,6 +78,15 @@ Mesuré en ligne : « paris » → 44, « Montpellier » → 19, « evenement »
 (accents ignorés), « cadeaux » → 1 résultat au singulier, « zzzz » → aucun
 résultat, champ vidé → les 100 reviennent. 1440 et 375, sans débordement.
 
+### Entrée ne poste plus le formulaire (2026-11-09)
+Appuyer sur Entrée faisait apparaître le bandeau blanc « Thank you! Your
+submission has been received! ». Annuler l'évènement `submit` ne suffisait pas :
+le gestionnaire jQuery de Webflow écoute le même évènement et s'exécutait quand
+même. Corrigé à la source — Entrée ne déclenche plus d'envoi, donc aucun `submit`
+n'est émis. Les bandeaux `w-form-done` / `w-form-fail` sont masqués en plus, par
+sécurité. Vérifié au vrai clavier : plus de bandeau, l'URL ne bouge pas, la
+recherche reste affichée.
+
 ## À faire — pour toi
 
 **Format de la date** : Webflow n'expose pas le format d'affichage par API. Le
