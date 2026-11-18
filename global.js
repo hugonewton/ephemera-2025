@@ -890,7 +890,9 @@ toggleAbsoluteBottom(".contact_mobile_nav_wrap", ".page_main");
 //////////////////////////////
 
 document.addEventListener("DOMContentLoaded", function () {
-  const SECONDARY_LANGS = ["en", "de", "nl"];
+  // doit lister toutes les langues Weglot, sinon stripLang ne retire pas le
+  // préfixe et le sélecteur fabrique des URLs du genre /en/it/privatisation
+  const SECONDARY_LANGS = ["en", "de", "nl", "it"];
 
   // Retire un éventuel préfixe de langue → chemin FR de base
   function stripLang(path) {
